@@ -69,6 +69,13 @@ const meta: Meta<typeof ReactModalConverted> = {
     showClose: true,
     overlayClassName: "",
     modalClassName: "",
+    children: (
+      <>
+        <h2>Modal Title</h2>
+        <p>This is the modal content.</p>
+        <button data-modal-close>Close from inside</button>
+      </>
+    ),
   },
   parameters: {
     layout: "centered",
@@ -84,17 +91,11 @@ const meta: Meta<typeof ReactModalConverted> = {
 export default meta;
 type Story = StoryObj<typeof ReactModalConverted>;
 
+// --- Stories statiques (compatibles runner) ---
+
 export const Default: Story = {
   args: {
-    ...meta.args,
-    modalClassName: "",
-    children: (
-      <>
-        <h2>Modal Title</h2>
-        <p>This is the modal content.</p>
-        <button data-modal-close>Close from inside</button>
-      </>
-    ),
+    isOpen: false,
   },
   render: (args) => {
     const [isOpen, setIsOpen] = useState(args.isOpen);
@@ -117,7 +118,20 @@ export const WithoutCloseButton: Story = {
   parameters: {
     docs: { description: { story: "Modal without the default close button" } },
   },
-  render: Default.render,
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(args.isOpen);
+    return (
+      <>
+        <button onClick={() => setIsOpen(true)}>Open Modal</button>
+        <ReactModalConverted
+          {...args}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}>
+          {args.children}
+        </ReactModalConverted>
+      </>
+    );
+  },
 };
 
 export const NoOverlayClose: Story = {
@@ -125,7 +139,20 @@ export const NoOverlayClose: Story = {
   parameters: {
     docs: { description: { story: "Overlay click will not close the modal" } },
   },
-  render: Default.render,
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(args.isOpen);
+    return (
+      <>
+        <button onClick={() => setIsOpen(true)}>Open Modal</button>
+        <ReactModalConverted
+          {...args}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}>
+          {args.children}
+        </ReactModalConverted>
+      </>
+    );
+  },
 };
 
 export const NoEscapeClose: Story = {
@@ -133,7 +160,20 @@ export const NoEscapeClose: Story = {
   parameters: {
     docs: { description: { story: "Escape key will not close the modal" } },
   },
-  render: Default.render,
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(args.isOpen);
+    return (
+      <>
+        <button onClick={() => setIsOpen(true)}>Open Modal</button>
+        <ReactModalConverted
+          {...args}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}>
+          {args.children}
+        </ReactModalConverted>
+      </>
+    );
+  },
 };
 
 export const CustomStyling: Story = {
@@ -147,5 +187,45 @@ export const CustomStyling: Story = {
       description: { story: "Custom styled overlay and modal container" },
     },
   },
-  render: Default.render,
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(args.isOpen);
+    return (
+      <>
+        <button onClick={() => setIsOpen(true)}>Open Modal</button>
+        <ReactModalConverted
+          {...args}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}>
+          {args.children}
+        </ReactModalConverted>
+      </>
+    );
+  },
+};
+
+// --- Story interactive (pour la démo UI, désactivée pour les tests runner) ---
+
+export const InteractiveDemo: Story = {
+  args: {
+    ...meta.args,
+    isOpen: false,
+  },
+  render: (args) => {
+    const [isOpen, setIsOpen] = useState(args.isOpen);
+    return (
+      <>
+        <button onClick={() => setIsOpen(true)}>Open Modal</button>
+        <ReactModalConverted
+          {...args}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}>
+          {args.children}
+        </ReactModalConverted>
+      </>
+    );
+  },
+  parameters: {
+    docs: { description: { story: "Demo interactive pour Storybook UI" } },
+    test: { disable: true }, // Désactive cette story pour le runner
+  },
 };

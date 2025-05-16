@@ -82,13 +82,30 @@ export default App;
 - The component uses Tailwind CSS utility classes by default for layout and appearance.
 - You can override or extend these styles using your own CSS or by customizing Tailwind in your project.
 
-## Unit Testing
+## Tests & Coverage
 
-Unit tests are provided using Jest and React Testing Library. To run the tests:
+Unit tests are written with [Vitest](https://vitest.dev/) and [Testing Library](https://testing-library.com/).
+
+To run the tests:
 
 ```bash
-npm test
+npm run test
 ```
+
+To generate a coverage report:
+
+```bash
+npm run test -- --coverage
+```
+
+**Current coverage:**
+
+| File      | % Stmts | % Branch | % Funcs | % Lines |
+| --------- | ------- | -------- | ------- | ------- |
+| Modal.tsx | 98.03   | 100      | 100     | 98      |
+| **Total** | 98.03   | 100      | 100     | 98      |
+
+> For the latest details, see the report in the `coverage/` folder after running the tests.
 
 ## Migrating from jQuery Modal
 

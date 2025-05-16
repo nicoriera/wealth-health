@@ -4,7 +4,6 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
 import { storybookTest } from "@storybook/experimental-addon-test/vitest-plugin";
-import tailwindcss from "@tailwindcss/vite";
 
 const dirname =
   typeof __dirname !== "undefined"
@@ -21,7 +20,6 @@ export default defineConfig({
           // The plugin will run tests for the stories defined in your Storybook config
           // See options at: https://storybook.js.org/docs/writing-tests/test-addon#storybooktest
           storybookTest({ configDir: path.join(dirname, ".storybook") }),
-          tailwindcss(),
         ],
         test: {
           name: "storybook",

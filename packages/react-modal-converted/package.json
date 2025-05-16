@@ -32,6 +32,8 @@
   ],
   "scripts": {
     "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "build": "tsc -p tsconfig.json",
     "publish": "npm run build && npm publish",
     "storybook": "storybook dev -p 6006",
