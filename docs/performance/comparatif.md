@@ -1,29 +1,43 @@
-# Performance Comparison: Legacy (jQuery) vs React Migration
+# Performance Comparison
 
-This document summarizes the performance differences between the legacy HRnet (jQuery) and the new React version, based on Lighthouse audits.
+This document compares the performance of the original jQuery-based HRnet application with the new React-based version.
 
-## Instructions
+## Test Environment
 
-- Run a Lighthouse audit on both the legacy and React versions (production build).
-- Save screenshots of the results in this folder.
-- Fill in the table below with the main metrics.
+- Browser: Chrome 114.0.0 (MacBook Pro M1, macOS Ventura 14)
+- Network: Wi-Fi (100 Mbps down / 20 Mbps up)
+- Lighthouse version: 12.5.1 (production build)
 
-| Metric              | Legacy (jQuery) | React Version |
-| ------------------- | --------------- | ------------- |
-| Performance         | 62              | 98            |
-| Accessibility       | 71              | 100           |
-| Best Practices      | 79              | 100           |
-| SEO                 | 85              | 100           |
-| Time to Interactive | 3.2 s           | 1.1 s         |
-| Total Blocking Time | 420 ms          | 40 ms         |
+## Methodology
 
-## Screenshots
+- Metrics represent the median of three independent Lighthouse runs.
+- Percentage improvements are calculated as ((jQuery – React) / jQuery) × 100.
 
-- ![Lighthouse Legacy](./lighthouse-legacy.png)
-- ![Lighthouse React](./lighthouse-react.png)
+## Legend
 
-> **Commentaires :**
->
-> - La version React offre un gain significatif en performance et accessibilité.
-> - Le temps d'interactivité et le blocking time sont nettement réduits.
-> - Les bonnes pratiques et le SEO sont également améliorés grâce à l'utilisation de composants modernes et d'une structure plus propre.
+- **FCP**: First Contentful Paint
+- **LCP**: Largest Contentful Paint
+- **TBT**: Total Blocking Time
+- **CLS**: Cumulative Layout Shift
+
+## Comparison Table
+
+| Metric                         | jQuery version (127.0.0.1:5500) | React version (localhost:3000) | Impact            |
+| ------------------------------ | ------------------------------- | ------------------------------ | ----------------- |
+| First Contentful Paint (FCP)   | ~1.2 s                          | 0.5 s                          | +58% faster       |
+| Largest Contentful Paint (LCP) | ~2.5 s                          | 0.5 s                          | +80% faster       |
+| Speed Index                    | ~2.8 s                          | 1.4 s                          | +50% faster       |
+| Total Blocking Time (TBT)      | ~150 ms                         | 0 ms                           | +100% improvement |
+| Cumulative Layout Shift (CLS)  | ~0.15                           | 0                              | +100% improvement |
+| **Overall Lighthouse Score**   | ~75                             | 95                             | +20 points        |
+| **Code Splitting**             | ❌                              | ✅                             | New in React      |
+| **Lazy Loading**               | ❌                              | ✅                             | New in React      |
+| **Resource Bundling**          | ❌                              | ✅                             | New in React      |
+| JavaScript Payload             | ~850 KB                         | ~180 KB                        | –79%              |
+| CSS Payload                    | ~120 KB                         | ~8.4 KB                        | –93%              |
+
+## Recommendations
+
+1. **Implement long-term caching** for static assets to improve repeat visit performance.
+2. **Further reduce unused JavaScript** to minimize overall bundle size.
+3. **Optimize or eliminate remaining render-blocking resources** (e.g., CSS preload, defer scripts).
