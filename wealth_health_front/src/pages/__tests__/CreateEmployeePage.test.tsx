@@ -7,6 +7,7 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "../../i18n";
 import CreateEmployeePage from "../CreateEmployeePage";
 import employeeReducer from "../../features/employees/employeeSlice";
+import { act } from "react-dom/test-utils";
 
 // Mock problematic modules
 vi.mock("react-router-dom", () => ({
@@ -65,6 +66,29 @@ describe("CreateEmployeePage", () => {
     vi.clearAllMocks();
   });
 
+  function setMobileWidth(isMobile = true) {
+    // Simule la largeur d'écran mobile ou desktop
+    Object.defineProperty(window, "innerWidth", {
+      writable: true,
+      configurable: true,
+      value: isMobile ? 375 : 1024,
+    });
+    window.matchMedia = vi.fn().mockImplementation((query) => ({
+      matches: isMobile && query.includes("max-width"),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }));
+    // Déclenche l'événement resize pour le hook
+    act(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
+  }
+
   it("should display the title and the form", () => {
     renderWithProviders(<CreateEmployeePage />);
 
@@ -75,6 +99,26 @@ describe("CreateEmployeePage", () => {
     expect(
       screen.getByRole("button", { name: /enregistrer|save/i })
     ).toBeInTheDocument();
+  });
+
+  it("should display the sticky submit button on mobile only", () => {
+    setMobileWidth(true);
+    renderWithProviders(<CreateEmployeePage />);
+    const stickyDiv = screen.getByTestId("sticky-mobile-btn");
+    expect(stickyDiv).toBeInTheDocument();
+    const stickyBtn = stickyDiv.querySelector("button");
+    expect(stickyBtn).toBeInTheDocument();
+    expect(stickyBtn).toHaveClass("w-full");
+  });
+
+  it("should not display the sticky submit button on desktop", () => {
+    setMobileWidth(false);
+    renderWithProviders(<CreateEmployeePage />);
+    const stickyBtn = screen.getByRole("button", { name: /enregistrer|save/i });
+    // Le bouton desktop n'a pas la classe w-full ni le parent fixed
+    expect(stickyBtn).not.toHaveClass("w-full");
+    const stickyDiv = stickyBtn.closest(".fixed");
+    expect(stickyDiv).toBeNull();
   });
 
   it("should display the submit button", () => {

@@ -1,7 +1,7 @@
 // import { Link } from "react-router-dom"; // Remove unused import
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useState } from "react"; // Import useState
+import { useState, useEffect } from "react"; // Import useState and useEffect
 import { v4 as uuidv4 } from "uuid"; // Import uuid
 import { useDispatch } from "react-redux"; // Import useDispatch
 import { addEmployee } from "../features/employees/employeeSlice"; // Import addEmployee action
@@ -24,6 +24,21 @@ const departmentOptions = departments.map((dept) => ({
   value: dept,
   label: dept,
 }));
+
+// Hook pour détecter le mobile sans dépendance externe
+function useIsMobile(breakpoint = 767) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= breakpoint : false
+  );
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(`(max-width: ${breakpoint}px)`);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    setIsMobile(mediaQuery.matches);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, [breakpoint]);
+  return isMobile;
+}
 
 const CreateEmployeePage = () => {
   const { t } = useTranslation();
@@ -48,6 +63,8 @@ const CreateEmployeePage = () => {
       department: "",
     },
   });
+
+  const isMobile = useIsMobile(767);
 
   // Handle form submission
   const onSubmit: SubmitHandler<EmployeeFormData> = (data) => {
@@ -79,8 +96,14 @@ const CreateEmployeePage = () => {
     <Layout pageTitle={t("createEmployee.title")}>
       {/* Titre principal */}
 
-      <div className="bg-white p-6 md:p-8 rounded-lg shadow max-w-3xl mx-auto">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+      <div
+        className={`bg-white p-6 md:p-8 rounded-lg shadow max-w-3xl mx-auto${
+          isMobile ? " pb-24" : ""
+        }`}>
+        <form
+          id="create-employee-form"
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-8">
           {/* Section Informations personnelles */}
           <fieldset>
             <legend className="text-xl font-semibold text-gray-700 border-b border-gray-200 pb-3 mb-5">
@@ -229,20 +252,38 @@ const CreateEmployeePage = () => {
             </div>
           </fieldset>
 
-          {/* Bouton de soumission */}
-          <div className="pt-6 border-t border-gray-200">
-            <div className="flex justify-end">
-              <Button
-                type="submit"
-                loading={isModalOpen}
-                disabled={isModalOpen}
-                className="">
-                {t("createEmployee.buttons.save")}
-              </Button>
+          {/* Bouton de soumission (desktop uniquement) */}
+          {!isMobile && (
+            <div className="pt-6 border-t border-gray-200">
+              <div className="flex justify-end">
+                <Button
+                  type="submit"
+                  loading={isModalOpen}
+                  disabled={isModalOpen}
+                  className="">
+                  {t("createEmployee.buttons.save")}
+                </Button>
+              </div>
             </div>
-          </div>
+          )}
         </form>
       </div>
+
+      {/* Bouton de soumission sticky mobile */}
+      {isMobile && (
+        <div
+          className="fixed bottom-0 left-0 w-full z-30 shadow-lg bg-white px-4 py-3"
+          data-testid="sticky-mobile-btn">
+          <Button
+            type="submit"
+            form="create-employee-form"
+            loading={isModalOpen}
+            disabled={isModalOpen}
+            className="w-full">
+            {t("createEmployee.buttons.save")}
+          </Button>
+        </div>
+      )}
 
       {/* Modal Component */}
       <Modal

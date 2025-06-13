@@ -9,7 +9,6 @@ import {
   getSortedRowModel,
   getPaginationRowModel,
   getFilteredRowModel,
-  flexRender,
   SortingState,
   PaginationState,
 } from "@tanstack/react-table";
@@ -20,6 +19,9 @@ import type { RootState } from "../store/store";
 import type { Employee } from "../features/employees/employeeSlice";
 import Pagination from "../components/Pagination";
 import Button from "../components/Button";
+import EmployeeCardList from "../components/EmployeeCardList";
+import EmployeeTable from "../components/EmployeeTable";
+// import { useMediaQuery } from "react-responsive";
 
 // Add a debouncing hook for smoother filter UX
 function useDebounce<T>(value: T, delay = 300): T {
@@ -29,6 +31,21 @@ function useDebounce<T>(value: T, delay = 300): T {
     return () => clearTimeout(handler);
   }, [value, delay]);
   return debouncedValue;
+}
+
+// Hook pour détecter le mobile sans dépendance externe
+function useIsMobile(breakpoint = 767) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= breakpoint : false
+  );
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(`(max-width: ${breakpoint}px)`);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener("change", handler);
+    setIsMobile(mediaQuery.matches);
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, [breakpoint]);
+  return isMobile;
 }
 
 const EmployeeListPage = () => {
@@ -88,8 +105,18 @@ const EmployeeListPage = () => {
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: (row, _columnId, filterValue) => {
+      // Filtre sur toutes les colonnes visibles, insensible à la casse
+      return row.getAllCells().some((cell) =>
+        String(cell.getValue() ?? "")
+          .toLowerCase()
+          .includes(String(filterValue).toLowerCase())
+      );
+    },
     debugTable: false,
   });
+
+  const isMobile = useIsMobile(767);
 
   return (
     <Layout pageTitle={t("employeeList.title")}>
@@ -100,23 +127,21 @@ const EmployeeListPage = () => {
         </h1>
         {/* Filtres rapides (placeholder) */}
         <div className="flex-1 flex gap-2 items-center justify-start md:justify-center">
-          {/* TODO: Ajouter de vrais filtres (département, statut, etc.) */}
           <span className="text-gray-400 italic text-sm">
             Filtres rapides à venir
           </span>
         </div>
-        {/* Bouton Ajouter */}
         <Button
           onClick={() => {
             /* TODO: Naviguer ou ouvrir modale */
           }}
-          className="">
+          className="w-full md:w-auto">
           + {t("employeeList.addButton", "Ajouter")}
         </Button>
       </div>
       {/* Barre de recherche */}
-      <div className="mb-4 flex justify-end">
-        <div className="relative">
+      <div className="mb-4 flex flex-col sm:flex-row justify-end w-full gap-2">
+        <div className="relative w-full sm:w-80">
           <label htmlFor="globalFilter" className="sr-only">
             Search table
           </label>
@@ -125,7 +150,7 @@ const EmployeeListPage = () => {
             id="globalFilter"
             value={filterInput}
             onChange={(e) => setFilterInput(e.target.value)}
-            className="p-2 pl-9 border border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-500 focus:ring-opacity-50"
+            className="w-full p-2 pl-9 border border-gray-300 rounded-md shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-500 focus:ring-opacity-50"
             placeholder={t("employeeList.searchPlaceholder")}
           />
           {/* Clear button */}
@@ -154,80 +179,46 @@ const EmployeeListPage = () => {
           </div>
         </div>
       </div>
-      {/* Tableau des employés */}
-      <div className="relative bg-white shadow sm:rounded-lg overflow-x-auto max-h-[60vh] overflow-y-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50 sticky top-0 z-10">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th
-                    key={header.id}
-                    scope="col"
-                    className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer select-none hover:bg-gray-100 transition-colors"
-                    onClick={header.column.getToggleSortingHandler()}
-                    style={{
-                      width:
-                        header.getSize() !== 150 ? header.getSize() : undefined,
-                    }}>
-                    <span className="flex items-center">
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                      {{
-                        asc: <span className="ml-1.5 text-gray-700">🔼</span>,
-                        desc: <span className="ml-1.5 text-gray-700">🔽</span>,
-                      }[header.column.getIsSorted() as string] ?? (
-                        <span className="ml-1.5 text-gray-300 group-hover:text-gray-400">
-                          ↕️
-                        </span>
-                      )}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {table.getRowModel().rows.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={columns.length}
-                  className="px-4 py-5 text-sm text-gray-500 text-center">
-                  {t("employeeList.table.noEmployees")}
-                  {globalFilter ? " matching filter." : "."}
-                </td>
-              </tr>
-            ) : (
-              table.getRowModel().rows.map((row) => (
-                <tr
-                  key={row.id}
-                  className="even:bg-gray-50 hover:bg-indigo-50 cursor-pointer transition-colors duration-150">
-                  {row.getVisibleCells().map((cell) => (
-                    <td
-                      key={cell.id}
-                      className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  ))}
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      {/* Affichage conditionnel : tableau sur desktop, cards sur mobile */}
+      {isMobile ? (
+        <EmployeeCardList
+          rows={table.getRowModel().rows}
+          noDataText={
+            t("employeeList.table.noEmployees") +
+            (globalFilter ? " matching filter." : ".")
+          }
+        />
+      ) : (
+        <EmployeeTable table={table} globalFilter={globalFilter} t={t} />
+      )}
       {/* Pagination */}
-      <Pagination
-        currentPage={pagination.pageIndex + 1}
-        totalPages={table.getPageCount()}
-        onPrevious={() => table.previousPage()}
-        onNext={() => table.nextPage()}
-        disabled={table.getPageCount() === 0}
-      />
+      {isMobile ? (
+        <>
+          {/* Padding pour ne pas masquer le contenu */}
+          <div className="pb-24" />
+          <div className="fixed  bottom-0 left-0 w-full z-30 shadow-lg bg-white">
+            <Pagination
+              currentPage={pagination.pageIndex + 1}
+              totalPages={table.getPageCount()}
+              onPrevious={() => table.previousPage()}
+              onNext={() => table.nextPage()}
+              disabled={table.getPageCount() === 0}
+              isMobile={isMobile}
+            />
+          </div>
+        </>
+      ) : (
+        <div className="mt-4 w-full flex justify-center">
+          <Pagination
+            currentPage={pagination.pageIndex + 1}
+            totalPages={table.getPageCount()}
+            onPrevious={() => table.previousPage()}
+            onNext={() => table.nextPage()}
+            disabled={table.getPageCount() === 0}
+            isMobile={isMobile}
+          />
+        </div>
+      )}
     </Layout>
   );
 };

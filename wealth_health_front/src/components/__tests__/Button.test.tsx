@@ -88,4 +88,10 @@ describe("Button", () => {
     const button = screen.getByRole("button");
     expect(button).toHaveClass("custom-class");
   });
+
+  it("should apply w-full class for full width button (mobile sticky)", () => {
+    render(<Button className="w-full">Full Width Button</Button>);
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("w-full");
+  });
 });
