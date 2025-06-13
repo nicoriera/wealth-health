@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "./Button";
+import { useTranslation } from "react-i18next";
 
 interface PaginationProps {
   currentPage: number; // 1-based
@@ -24,6 +25,7 @@ const Pagination: React.FC<PaginationProps> = ({
   disabled = false,
   isMobile = false,
 }) => {
+  const { t } = useTranslation();
   if (isMobile) {
     return (
       <nav
@@ -36,7 +38,7 @@ const Pagination: React.FC<PaginationProps> = ({
             disabled={disabled || currentPage <= 1}
             aria-label="Page précédente"
             className="w-full">
-            Précédent
+            {t("employeeList.pagination.previousPage")}
           </Button>
           <Button
             variant="secondary"
@@ -44,7 +46,7 @@ const Pagination: React.FC<PaginationProps> = ({
             disabled={disabled || currentPage >= totalPages}
             aria-label="Page suivante"
             className="w-full">
-            Suivant
+            {t("employeeList.pagination.nextPage")}
           </Button>
         </div>
       </nav>
@@ -63,14 +65,14 @@ const Pagination: React.FC<PaginationProps> = ({
           onClick={onPrevious}
           disabled={disabled || currentPage <= 1}
           aria-label="Page précédente">
-          Précédent
+          {t("employeeList.pagination.previousPage")}
         </Button>
         <Button
           variant="secondary"
           onClick={onNext}
           disabled={disabled || currentPage >= totalPages}
           aria-label="Page suivante">
-          Suivant
+          {t("employeeList.pagination.nextPage")}
         </Button>
       </div>
     </nav>

@@ -128,7 +128,7 @@ const EmployeeListPage = () => {
         {/* Filtres rapides (placeholder) */}
         <div className="flex-1 flex gap-2 items-center justify-start md:justify-center">
           <span className="text-gray-400 italic text-sm">
-            Filtres rapides à venir
+            {t("employeeList.filters")}
           </span>
         </div>
         <Button

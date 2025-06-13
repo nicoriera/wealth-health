@@ -23,6 +23,7 @@
       "department": "Service"
     },
     "fields": {
+      "country": "Pays",
       "firstName": "Prénom",
       "lastName": "Nom",
       "dateOfBirth": "Date de naissance",
@@ -32,6 +33,9 @@
       "state": "État",
       "zipCode": "Code postal",
       "department": "Service"
+    },
+    "datePicker": {
+      "placeholder": "JJ/MM/AAAA"
     },
     "buttons": {
       "save": "Enregistrer l'employé"
@@ -49,12 +53,15 @@
       "cityRequired": "La ville est obligatoire",
       "stateRequired": "L'état est obligatoire",
       "zipCodeRequired": "Le code postal est obligatoire",
+      "zipCodeFR": "Le code postal français doit contenir 5 chiffres",
+      "zipCodeUS": "Le code postal US doit être au format 12345 ou 12345-6789",
       "departmentRequired": "Le service est obligatoire",
       "selectDepartment": "Sélectionnez un service"
     }
   },
   "employeeList": {
     "title": "Employés actuels",
+    "filters": "Filtres rapides à venir",
     "searchPlaceholder": "Recherche…",
     "table": {
       "noEmployees": "Aucun employé trouvé.",
@@ -74,8 +81,8 @@
       "showing": "Affichage de {{count}} sur {{total}} résultats",
       "page": "Page",
       "of": "sur",
-      "previousPage": "Page précédente",
-      "nextPage": "Page suivante"
+      "previousPage": "Précédente",
+      "nextPage": "Suivante"
     },
     "addButton": "Ajouter",
     "prev": "Précédent",

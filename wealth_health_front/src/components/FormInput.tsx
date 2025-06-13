@@ -11,6 +11,9 @@ interface FormInputProps {
   name: keyof EmployeeFormData;
   rules?: Record<string, unknown>;
   placeholder?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  pattern?: string;
+  maxLength?: number;
 }
 
 const FormInput = ({
@@ -23,6 +26,9 @@ const FormInput = ({
   name,
   rules,
   placeholder,
+  inputMode,
+  pattern,
+  maxLength,
 }: FormInputProps) => {
   return (
     <div>
@@ -46,6 +52,9 @@ const FormInput = ({
         } focus:ring-opacity-50 sm:text-sm`}
         aria-invalid={!!error}
         aria-describedby={error ? `${id}-error` : undefined}
+        {...(inputMode ? { inputMode } : {})}
+        {...(pattern ? { pattern } : {})}
+        {...(maxLength ? { maxLength } : {})}
       />
       {error && (
         <p id={`${id}-error`} className="mt-1 text-sm text-red-600">

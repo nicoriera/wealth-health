@@ -6,6 +6,7 @@ export type EmployeeFormData = {
   street: string;
   city: string;
   state: string;
+  country: string;
   zipCode: string;
   department: string;
 };
