@@ -1,11 +1,11 @@
 # wealth-health
 
-> Monorepo containing the HRnet application migrated from jQuery to React, including performance benchmarks and reusable components.
+> Monorepo for the Wealth Health HR application, modernized with React, TypeScript, and Tailwind CSS. Includes a reusable component library and technical documentation.
 
 ## Table of Contents
 
 - [Overview](#overview)
-- [Test Environment](#test-environment)
+- [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
 - [Folder Structure](#folder-structure)
 - [Available Scripts](#available-scripts)
@@ -16,39 +16,44 @@
 
 ## Overview
 
-The HRnet application provides a user interface for employee management. This monorepo includes:
+This monorepo contains:
 
-- **wealth_health_front**: React frontend with Tailwind CSS and Lighthouse performance optimizations.
-- **packages/react-modal-converted**: A converted React version of a modal component (story-driven).
-- **docs**: Architecture, conventions, and performance reports (Lighthouse).
+- **wealth_health_front**: Modern React frontend (Vite, TypeScript, Tailwind CSS, state management, i18n, Vitest tests).
+- **packages/react-modal-converted**: Reusable React component library (e.g., Modal), fully tested.
+- **docs**: Technical documentation, conventions, performance reports.
 
-## Test Environment
+## Tech Stack
 
-- **Browser**: Chrome 114.0.0 (MacBook Pro M1, macOS Ventura 14)
-- **Network**: Wi-Fi (100 Mbps down / 20 Mbps up)
-- **Lighthouse**: v12.5.1 (production builds)
+- **React 18+** (functional, hooks)
+- **TypeScript** (strict typing)
+- **Vite** (fast build tool)
+- **Tailwind CSS** (utility-first design system)
+- **Vitest** (unit testing)
+- **Redux Toolkit** (state management, if applicable)
+- **React Router** (routing)
+- **i18next** (internationalization)
+- **ESLint/Prettier** (code quality and formatting)
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js >= 14.x
-- npm or yarn
+- Node.js >= 16.x
+- npm >= 8.x or yarn
 
 ### Installation
 
 ```bash
-# Install root dependencies (if using workspace)
+# Install root dependencies (monorepo)
 npm install
 
-# Install and start frontend
+# Install and start the frontend
 cd wealth_health_front
 npm install
-npm start
-
-# Optionally, open docs
-open docs/index.html
+npm run dev
 ```
+
+> Documentation is available in Markdown files inside the `docs/` folder (e.g., `docs/architecture.md`, `docs/conventions.md`).
 
 ## Folder Structure
 
@@ -57,45 +62,55 @@ wealth_health/
 ├── docs/
 │   ├── architecture.md
 │   ├── conventions.md
-│   └── performance/comparatif.md
+│   └── performance/
 ├── packages/
 │   └── react-modal-converted/
-│       ├── .storybook/
-│       └── src/
+│       ├── src/
+│       └── stories/
 └── wealth_health_front/
     ├── public/
     └── src/
+        ├── assets/
         ├── components/
         ├── features/
-        └── store/
+        ├── lib/
+        ├── locales/
+        ├── pages/
+        ├── store/
+        └── types/
 ```
 
 ## Available Scripts
 
-From the project root (adapt `--prefix` or `cd` into subfolders):
+From the project root:
 
-- `npm start` — start React frontend (wealth_health_front)
-- `npm run storybook` — launch component library (react-modal-converted)
-- `npm test` — run unit tests
-- `npm run build` — build production bundle
-- `npm run lint` — run ESLint
+- `npm run dev --workspace=wealth_health_front` — start the React frontend
+- `npm run test --workspace=wealth_health_front` — run unit tests (Vitest)
+- `npm run build --workspace=wealth_health_front` — build for production
+- `npm run lint --workspace=wealth_health_front` — check code quality
+- `npm run storybook --workspace=react-modal-converted` — launch Storybook for the component library
 
 ## Documentation
 
 - **Architecture & Conventions**: `docs/architecture.md`, `docs/conventions.md`
-- **Performance Comparison**: `docs/performance/comparatif.md`
+- **Performance**: `docs/performance/comparatif.md`
 
 ## Best Practices
 
-- Follow SOLID and DRY principles in code.
-- Use React functional components with Hooks and Tailwind CSS.
-- Enforce TypeScript typing; avoid `any`.
-- Optimize bundle size with code splitting, lazy loading, and caching.
-- Ensure accessibility (a11y) and performance (Lighthouse scores).
+- Follow SOLID and DRY principles.
+- Use React functional components with hooks.
+- Enforce strict TypeScript typing; avoid `any`.
+- Use Tailwind CSS for styling, mobile-first.
+- Optimize bundle size (code splitting, lazy loading).
+- Write unit tests with Vitest (see `src/components/__tests__`).
+- Prioritize accessibility (a11y): semantic HTML, ARIA, keyboard navigation.
+- Secure the frontend (input validation/sanitation).
+- Internationalize the UI (i18next, files in `src/locales/`).
+- Follow naming and code organization conventions (see `docs/conventions.md`).
 
 ## Contributing
 
-Please fork the repository and create a pull request with descriptive commits following Conventional Commits.
+Fork the repository and open a pull request with descriptive commits following the Conventional Commits specification.
 
 ## License
 
