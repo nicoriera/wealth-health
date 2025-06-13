@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { describe, it, expect, afterEach, vi } from "vitest";
 
-import "@testing-library/jest-dom";
 import React from "react";
 import ReactModalConverted from "../Modal";
 
@@ -13,7 +13,7 @@ const modalContent = <div>Contenu de la modale</div>;
  * Renders the modal with default props and returns the onClose mock.
  */
 const setup = (props: Props = {}, children = modalContent) => {
-  const onClose = jest.fn();
+  const onClose = vi.fn();
   render(
     <ReactModalConverted onClose={onClose} isOpen={false} {...props}>
       {children}
@@ -25,7 +25,7 @@ const setup = (props: Props = {}, children = modalContent) => {
 describe("ReactModalConverted", () => {
   afterEach(() => {
     cleanup();
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("Rendering", () => {
@@ -121,7 +121,7 @@ describe("ReactModalConverted", () => {
 
   describe("Side effects", () => {
     it("restores body overflow style after close", () => {
-      const onClose = jest.fn();
+      const onClose = vi.fn();
       const { rerender } = render(
         <ReactModalConverted isOpen={true} onClose={onClose}>
           {modalContent}

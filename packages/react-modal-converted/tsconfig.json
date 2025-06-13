@@ -12,8 +12,8 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmit": false,
-    "types": ["jest", "node"]
+    "types": ["vitest/globals", "node"]
   },
-  "include": ["src"],
+  "include": ["src", "src/__tests__/vitest.d.ts"],
   "exclude": ["src/__tests__"]
 }

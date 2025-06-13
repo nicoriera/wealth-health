@@ -13,6 +13,17 @@ const dirname =
 // More info at: https://storybook.js.org/docs/writing-tests/test-addon
 export default defineConfig({
   test: {
+    include: ["src/**/*.test.{ts,tsx}"],
+    exclude: [
+      "src/**/*.stories.*",
+      "src/**/*.mdx",
+      "node_modules",
+      "dist",
+      ".storybook",
+    ],
+    environment: "jsdom",
+    globals: true,
+    setupFiles: [".storybook/vitest.setup.ts"],
     workspace: [
       {
         extends: true,
