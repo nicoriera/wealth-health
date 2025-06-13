@@ -2,6 +2,17 @@
 
 A functional, accessible, and customizable modal component for React, inspired by the [jQuery Modal plugin](https://github.com/kylefox/jquery-modal). This component is designed to replace legacy jQuery modals in modern React applications, providing better performance, accessibility, and maintainability.
 
+---
+
+## Monorepo & Source
+
+This package is part of a monorepo: [nicoriera/wealth-health](https://github.com/nicoriera/wealth-health)
+
+- 📦 **Package source:** [`packages/react-modal-converted`](https://github.com/nicoriera/wealth-health/tree/main/packages/react-modal-converted)
+- 📝 **NPM:** [`@nicoriera/react-modal-converted`](https://www.npmjs.com/package/@nicoriera/react-modal-converted)
+
+---
+
 ## Features
 
 - Renders modal content using React Portal
@@ -11,14 +22,14 @@ A functional, accessible, and customizable modal component for React, inspired b
 - Closes when clicking any element with the `data-modal-close` attribute inside the modal
 - Basic accessibility (role, aria-modal)
 - Easily styleable with Tailwind CSS or your own CSS
-- Fully unit tested with React Testing Library & Jest
+- Fully unit tested with [Vitest](https://vitest.dev/) & [Testing Library](https://testing-library.com/)
 
 ## Installation
 
 ```bash
-npm install <your-package-name>
+npm install @nicoriera/react-modal-converted
 # Or
-yarn add <your-package-name>
+yarn add @nicoriera/react-modal-converted
 ```
 
 > **Note:** You must have `react` and `react-dom` installed in your main project.
@@ -27,7 +38,7 @@ yarn add <your-package-name>
 
 ```jsx
 import React, { useState } from "react";
-import ReactModalConverted from "<your-package-name>"; // Adjust import path
+import ReactModalConverted from "@nicoriera/react-modal-converted";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
