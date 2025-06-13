@@ -1,6 +1,8 @@
 import { Control, Controller, FieldError } from "react-hook-form";
 import DatePicker from "react-datepicker";
 import { EmployeeFormData } from "../types/employee";
+import { fr as dateFnsFr, enUS } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 
 interface FormDatePickerProps {
   id: string;
@@ -19,6 +21,21 @@ const FormDatePicker = ({
   error,
   rules,
 }: FormDatePickerProps) => {
+  const { i18n, t } = useTranslation();
+
+  // Fonction utilitaire pour choisir la locale date-fns selon la langue courante
+  const getDateFnsLocale = (lng: string) => {
+    switch (lng) {
+      case "fr":
+        return dateFnsFr;
+      case "en":
+      default:
+        return enUS;
+    }
+  };
+
+  const dateFnsLocale = getDateFnsLocale(i18n.language);
+
   return (
     <div>
       <label
@@ -36,7 +53,7 @@ const FormDatePicker = ({
             onChange={field.onChange}
             onBlur={field.onBlur}
             selected={field.value instanceof Date ? field.value : null}
-            placeholderText="MM/DD/YYYY"
+            placeholderText={t("createEmployee.datePicker.placeholder")}
             className={`mt-0 block w-full px-3 py-2 border ${
               error ? "border-red-500" : "border-gray-300"
             } rounded-md shadow-sm focus:outline-none focus:ring-2 ${
@@ -50,6 +67,7 @@ const FormDatePicker = ({
             dropdownMode="select"
             aria-invalid={!!error}
             aria-describedby={error ? `${id}-error` : undefined}
+            locale={dateFnsLocale}
           />
         )}
       />

@@ -19,6 +19,7 @@
       "department": "Department"
     },
     "fields": {
+      "country": "Country",
       "firstName": "First Name",
       "lastName": "Last Name",
       "dateOfBirth": "Date of Birth",
@@ -28,6 +29,9 @@
       "state": "State",
       "zipCode": "Zip Code",
       "department": "Department"
+    },
+    "datePicker": {
+      "placeholder": "MM/DD/YYYY"
     },
     "buttons": {
       "save": "Save Employee"
@@ -45,11 +49,14 @@
       "cityRequired": "City is required",
       "stateRequired": "State is required",
       "zipCodeRequired": "Zip code is required",
+      "zipCodeFR": "French zip code must be 5 digits",
+      "zipCodeUS": "US zip code must be in the format 12345 or 12345-6789",
       "departmentRequired": "Department is required"
     }
   },
   "employeeList": {
     "title": "Current Employees",
+    "filters": "Quick filters to come",
     "searchPlaceholder": "Search...",
     "table": {
       "noEmployees": "No employees found.",
@@ -68,7 +75,9 @@
       "rows": "Rows:",
       "showing": "Showing {{count}} of {{total}} results",
       "page": "Page",
-      "of": "of"
+      "of": "of",
+      "previousPage": "Previous",
+      "nextPage": "Next"
     },
     "addButton": "Add",
     "prev": "Previous",

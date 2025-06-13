@@ -28,3 +28,10 @@ body {
   overflow-x: hidden;
   position: static;
 }
+
+/* Dans ton index.css ou un fichier global */
+[data-modal-close="true"] {
+  right: 1rem !important; /* ou ajuste selon le besoin */
+  left: auto !important;
+  top: 1rem !important;
+}
