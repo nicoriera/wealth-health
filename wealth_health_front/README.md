@@ -1,17 +1,19 @@
 # HRnet – Wealth Health
 
-HRnet is a modern employee management system built with React, TypeScript, and Vite. The application enables HR administrators to efficiently manage employee records through a user-friendly and accessible interface.
+HRnet is a modern employee management application designed for an optimal user experience on both **desktop and mobile**. The interface adapts automatically: table view on desktop, **card view on mobile**, with sticky pagination and action buttons for maximum accessibility. The app is robust, accessible, well-tested, and fully internationalized (French/English).
 
 ## Features
 
 - 🌐 Internationalization (English/French)
-- 📝 Create new employee records with robust form validation
-- 📋 View and manage employee list with advanced table features
-- 🔍 Search and filter capabilities
-- 📱 Responsive design using Tailwind CSS
-- 💾 Persistent data storage with Redux Persist
-- 🎨 Modern UI with custom animations
-- ♿ Accessibility-first development
+- 📱 **Responsive design**: table on desktop, cards on mobile
+- 📋 Employee list with **sticky pagination** on mobile
+- ➕ Sticky action buttons (add, save) on mobile
+- 🔍 Global search across all columns (instant filtering)
+- 📝 Create employee with advanced validation
+- 💾 Persistent data storage (Redux Persist)
+- 🎨 Modern UI with animations and reusable components
+- ♿ **Accessibility-first** (a11y)
+- ✅ **Robust tests** (Vitest): responsive, accessibility, search, pagination, etc.
 
 ## Tech Stack
 
@@ -29,7 +31,7 @@ HRnet is a modern employee management system built with React, TypeScript, and V
 
 ## Prerequisites
 
-- Node.js (latest LTS version recommended)
+- Node.js (latest LTS recommended)
 - npm or yarn
 
 ## Getting Started
@@ -43,7 +45,7 @@ HRnet is a modern employee management system built with React, TypeScript, and V
    ```bash
    npm run dev
    ```
-   The application will be available at [http://localhost:5173](http://localhost:5173)
+   The app will be available at [http://localhost:5173](http://localhost:5173)
 
 ## Available Scripts
 
@@ -51,57 +53,58 @@ HRnet is a modern employee management system built with React, TypeScript, and V
 - `npm run build` – Build for production
 - `npm run lint` – Run ESLint
 - `npm run preview` – Preview the production build
-- `npm run test` – Run unit tests
+- `npm run test` – Run all unit tests
 - `npm run test:watch` – Run tests in watch mode
-- `npm run test:coverage` – Generate test coverage report
+- `npm run test:coverage` – Generate coverage report
 
 ## Project Structure
 
 ```
 src/
 ├── assets/         # Static assets
-├── components/     # Reusable components
-│   └── __tests__/  # Component tests
-├── features/       # Feature-specific components and logic
-│   └── employees/  # Employee management feature
+├── components/     # Reusable components (cards, table, pagination, etc.)
+│   └── __tests__/  # Component unit tests
+├── features/       # Business logic (employees, etc.)
+│   └── employees/  # Employee feature
 │       └── __tests__/  # Feature tests
 ├── lib/            # Utilities and constants
 ├── locales/        # i18n translation files
-├── pages/          # Page components
+├── pages/          # Main pages
 │   └── __tests__/  # Page integration tests
-├── store/          # Redux store configuration
+├── store/          # Redux configuration
 └── test/           # Test utilities and setup
 ```
 
 ## Testing
 
-This project includes comprehensive unit and integration tests using Vitest and Testing Library.
+The app is covered by **unit and integration tests** using **Vitest** and Testing Library.
 
-### Running Tests
+- **Tested behaviors**: responsive (cards/table, sticky), accessibility, global search, pagination, user actions, etc.
+- **Robustness**: tests simulate real user interactions (typing, navigation, resize), check accessibility and UI consistency.
+- **Coverage goals**:
+  - Components: ≥ 90%
+  - Redux slices: ≥ 95%
+  - Pages: ≥ 80%
+  - Utilities: ≥ 95%
+
+### Running tests
 
 ```bash
-npm run test           # Run all tests
-npm run test:watch     # Run tests in watch mode
-npm run test:coverage  # Generate coverage report
+npm run test           # All tests
+npm run test:watch     # Watch mode
+npm run test:coverage  # Coverage report
 ```
 
-### Test Coverage Goals
+### Writing tests
 
-- Components: ≥ 90%
-- Redux slices: ≥ 95%
-- Pages: ≥ 80%
-- Utilities: ≥ 95%
-
-### Writing Tests
-
-See [`src/test/README.md`](src/test/README.md) for detailed testing guidelines and examples.
+See [`src/test/README.md`](src/test/README.md) for best practices and examples.
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'feat: Add AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
+1. Fork the repo
+2. Create your branch (`git checkout -b feature/MyFeature`)
+3. Commit (`git commit -m 'feat: MyFeature'`)
+4. Push (`git push origin feature/MyFeature`)
 5. Open a Pull Request
 
 ## License

@@ -8,6 +8,7 @@ interface PaginationProps {
   onNext: () => void;
   className?: string;
   disabled?: boolean;
+  isMobile?: boolean;
 }
 
 /**
@@ -21,10 +22,37 @@ const Pagination: React.FC<PaginationProps> = ({
   onNext,
   className = "",
   disabled = false,
+  isMobile = false,
 }) => {
+  if (isMobile) {
+    return (
+      <nav
+        className={`flex flex-row w-full items-center gap-2 px-4 py-3 bg-gray-50 border-t border-gray-200 ${className}`}
+        aria-label="Pagination navigation">
+        <div className="flex flex-row gap-2 w-full">
+          <Button
+            variant="secondary"
+            onClick={onPrevious}
+            disabled={disabled || currentPage <= 1}
+            aria-label="Page précédente"
+            className="w-full">
+            Précédent
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={onNext}
+            disabled={disabled || currentPage >= totalPages}
+            aria-label="Page suivante"
+            className="w-full">
+            Suivant
+          </Button>
+        </div>
+      </nav>
+    );
+  }
   return (
     <nav
-      className={`flex items-center justify-between px-4 py-3 bg-gray-50 border-t border-gray-200 ${className}`}
+      className={`flex w-full items-center justify-between px-4 py-3 bg-gray-50 border-t border-gray-200 ${className} gap-2`}
       aria-label="Pagination navigation">
       <span className="text-sm text-gray-600">
         Page {currentPage} / {totalPages}
